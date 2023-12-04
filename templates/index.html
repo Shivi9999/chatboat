@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+   
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    
+    #questionForm {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+    
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    #answerContainer {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Add any additional styling you need */
+    
+</style>
+<body>
+<!-- Your HTML file with the form -->
+{% comment %} <div id='que'></div> {% endcomment %}
+<form id="questionForm">
+    <label for="userInput">Ask a question:</label>
+    <input type="text" id="userInput" name="user_input">
+    <button type="submit">Get Answer</button>
+</form>
+
+<div id="answerContainer">{{ answer }}</div>
+<!-- Remove this line as it's not needed -->
+{% comment %}<p>{{ answer }}</p>{% endcomment %}
+<!-- ... (your existing HTML code) ... -->
+{% comment %} <script>
+    document.getElementById('que').addEventListener('submit',function(event)){
+        event.preventDefault();
+        const userInput=
+    }
+</script> {% endcomment %}
+<script>
+    document.getElementById('questionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const userInput = document.getElementById('userInput').value;
+
+        // Make an AJAX request to the Django backend
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    try {
+                        // Update the content of the answerContainer using Django template syntax
+                        document.getElementById('answerContainer').innerHTML = xhr.responseText;
+                    } 
+                    catch (error) {
+                        console.error('Error updating answerContainer:', error);
+                    }
+                } else {
+                    console.error('Error:', xhr.status, xhr.statusText);
+                }
+            }
+        };
+
+        // Replace 'your_django_url' with your actual Django endpoint
+        xhr.open('GET', `/get_answer/?user_input=${encodeURIComponent(userInput)}`, true);
+        xhr.send();
+    });
+</script>
+</body>
+</html>
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+</head>
+<body>
+    <!-- Your HTML file with the form -->
+
+<form id="questionForm">
+    <label for="userInput">Ask a question:</label>
+    <input type="text" id="userInput" name="user_input">
+    <button type="submit">Get Answer</button>
+</form>
+
+<div id="answerContainer">{{ answer }}</div>
+
+<!-- Remove this line as it's not needed -->
+{% comment %} <p>{{ answer }}</p> {% endcomment %} 
+
+    {% comment %} <h1>Chatbot Answer</h1>
+    <p>{{ answer }}</p> {% endcomment %}
+
+{% comment %} <script>
+    document.getElementById('questionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const userInput = document.getElementById('userInput').value;
+
+        // Make an AJAX request to the Django backend
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    
+                 console.log(xhr.responseText) 
+                 const response = JSON.parse(xhr.responseText);
+                    
+                    // Update the content of the answerContainer
+                    document.getElementById('answerContainer').innerText = response.answer;
+                } else {
+                    console.error('Error:', xhr.status, xhr.statusText);
+                }
+            }
+        };
+
+        // Replace 'your_django_url' with your actual Django endpoint
+        xhr.open('GET', `/get_answer/?user_input=${encodeURIComponent(userInput)}`, true);
+        xhr.send();
+       
+    });
+</script>  
+<!-- ... (your existing HTML code) ... -->
+
+<script>
+    document.getElementById('questionForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const userInput = document.getElementById('userInput').value;
+
+        // Make an AJAX request to the Django backend
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+
+                        // Update the content of the answerContainer
+                        document.getElementById('answerContainer').innerText = response.answer;
+                    } 
+                    catch (error) {
+                        console.error('Error parsing JSON:', error);
+                    }
+                } else {
+                    console.error('Error:', xhr.status, xhr.statusText);
+                }
+            }
+        };
+
+        // Replace 'your_django_url' with your actual Django endpoint
+        xhr.open('GET', `/get_answer/?user_input=${encodeURIComponent(userInput)}`, true);
+        xhr.send();
+    });
+</script>
+</body>
+</html>
+
+   
+ {% endcomment %}
